@@ -242,8 +242,7 @@
   <header>
     <div class="h-title">GAS<span>PRIJS</span></div>
     <div class="h-meta">
-      <!-- ✏️ DATUM -->
-      Peildatum <strong>11-03-2025</strong><br>
+      Peildatum <strong id="hdr-datum"></strong><br>
       EUR/MWh &nbsp;·&nbsp; ZTP · TTF
     </div>
   </header>
@@ -262,46 +261,33 @@
         <div class="col-hub">ZTP</div>
         <div class="col-hub-sub">Zeebrugge Trading Point</div>
       </div>
-
-      <!-- Dagprijs ZTP -->
       <div class="dag-block">
         <div class="dag-lbl">Dag-ahead</div>
-        <div class="dag-date" id="dag-date-ztp"></div>
-        <div class="dag-price">00,00</div>
+        <div class="dag-date" id="dag-datum"></div>
+        <div class="dag-price" id="ztp-dag"></div>
         <div class="dag-unit">EUR / MWh</div>
       </div>
-
-      <!-- Maandgemiddelden ZTP -->
       <div class="maand-lbl">Maandgemiddelden</div>
-
       <div class="mblock">
         <div class="mblock-left">
-          <!-- ✏️ MAAND -->
-          <div class="mblock-month">Maart 2025</div>
-          <div class="mblock-tag">Voorlopig</div>
+          <div class="mblock-month" id="ztp-m1-naam"></div>
+          <div class="mblock-tag" id="ztp-m1-tag"></div>
         </div>
-        <!-- ✏️ WAARDE -->
-        <div class="mblock-val">00,00<small>€/MWh</small></div>
+        <div class="mblock-val" id="ztp-m1-val"></div>
       </div>
-
       <div class="mblock def">
         <div class="mblock-left">
-          <!-- ✏️ MAAND -->
-          <div class="mblock-month">Febr. 2025</div>
+          <div class="mblock-month" id="ztp-m2-naam"></div>
           <div class="mblock-tag">Definitief</div>
         </div>
-        <!-- ✏️ WAARDE -->
-        <div class="mblock-val">00,00<small>€/MWh</small></div>
+        <div class="mblock-val" id="ztp-m2-val"></div>
       </div>
-
       <div class="mblock def">
         <div class="mblock-left">
-          <!-- ✏️ MAAND -->
-          <div class="mblock-month">Jan. 2025</div>
+          <div class="mblock-month" id="ztp-m3-naam"></div>
           <div class="mblock-tag">Definitief</div>
         </div>
-        <!-- ✏️ WAARDE -->
-        <div class="mblock-val">00,00<small>€/MWh</small></div>
+        <div class="mblock-val" id="ztp-m3-val"></div>
       </div>
     </div>
 
@@ -311,46 +297,33 @@
         <div class="col-hub">TTF</div>
         <div class="col-hub-sub">Title Transfer Facility</div>
       </div>
-
-      <!-- Dagprijs TTF -->
       <div class="dag-block">
         <div class="dag-lbl">Dag-ahead</div>
-        <div class="dag-date" id="dag-date-ttf"></div>
-        <div class="dag-price">00,00</div>
+        <div class="dag-date" id="dag-datum-2"></div>
+        <div class="dag-price" id="ttf-dag"></div>
         <div class="dag-unit">EUR / MWh</div>
       </div>
-
-      <!-- Maandgemiddelden TTF -->
       <div class="maand-lbl">Maandgemiddelden</div>
-
       <div class="mblock">
         <div class="mblock-left">
-          <!-- ✏️ MAAND -->
-          <div class="mblock-month">Maart 2025</div>
-          <div class="mblock-tag">Voorlopig</div>
+          <div class="mblock-month" id="ttf-m1-naam"></div>
+          <div class="mblock-tag" id="ttf-m1-tag"></div>
         </div>
-        <!-- ✏️ WAARDE -->
-        <div class="mblock-val">00,00<small>€/MWh</small></div>
+        <div class="mblock-val" id="ttf-m1-val"></div>
       </div>
-
       <div class="mblock def">
         <div class="mblock-left">
-          <!-- ✏️ MAAND -->
-          <div class="mblock-month">Febr. 2025</div>
+          <div class="mblock-month" id="ttf-m2-naam"></div>
           <div class="mblock-tag">Definitief</div>
         </div>
-        <!-- ✏️ WAARDE -->
-        <div class="mblock-val">00,00<small>€/MWh</small></div>
+        <div class="mblock-val" id="ttf-m2-val"></div>
       </div>
-
       <div class="mblock def">
         <div class="mblock-left">
-          <!-- ✏️ MAAND -->
-          <div class="mblock-month">Jan. 2025</div>
+          <div class="mblock-month" id="ttf-m3-naam"></div>
           <div class="mblock-tag">Definitief</div>
         </div>
-        <!-- ✏️ WAARDE -->
-        <div class="mblock-val">00,00<small>€/MWh</small></div>
+        <div class="mblock-val" id="ttf-m3-val"></div>
       </div>
     </div>
 
@@ -364,15 +337,60 @@
 
 </div>
 <script>
-  // Datum van vandaag automatisch invullen
-  const now = new Date();
-  const dag   = String(now.getDate()).padStart(2, '0');
-  const maand = String(now.getMonth() + 1).padStart(2, '0');
-  const jaar  = now.getFullYear();
-  const datumStr = `${dag}-${maand}-${jaar}`;
-  document.querySelectorAll('#dag-date-ztp, #dag-date-ttf').forEach(el => {
-    el.textContent = datumStr;
-  });
+// ╔══════════════════════════════════════════╗
+// ║        VARIABELEN — HIER INVULLEN        ║
+// ╠══════════════════════════════════════════╣
+
+  const ZTP_DAG  = '46,82';   // Dagwaarde ZTP
+
+  const ZTP_M1_NAAM = 'Maart 2026 (voorlopig)';    // Meest recente maand (voorlopig)
+  const ZTP_M1      = '51,72';
+  const ZTP_M2_NAAM = 'Febr. 2026';
+  const ZTP_M2      = '32,61';
+  const ZTP_M3_NAAM = 'Jan. 2026';
+  const ZTP_M3      = '34,50';
+
+  const TTF_DAG  = '47,56';   // Dagwaarde TTF
+
+  const TTF_M1_NAAM = 'Maart 2026 (voorlopig)';    // Meest recente maand (voorlopig)
+  const TTF_M1      = '51,64';
+  const TTF_M2_NAAM = 'Febr. 2026';
+  const TTF_M2      = '32,50';
+  const TTF_M3_NAAM = 'Jan. 2026';
+  const TTF_M3      = '34,00';
+
+// ╚══════════════════════════════════════════╝
+// Niets hieronder aanpassen
+
+  const now  = new Date();
+  const dd   = String(now.getDate()).padStart(2,'0');
+  const mm   = String(now.getMonth()+1).padStart(2,'0');
+  const yyyy = now.getFullYear();
+  const vandaag = `${dd}-${mm}-${yyyy}`;
+
+  const unit = '<small>€/MWh</small>';
+
+  document.getElementById('hdr-datum').textContent   = vandaag;
+  document.getElementById('dag-datum').textContent   = vandaag;
+  document.getElementById('dag-datum-2').textContent = vandaag;
+
+  document.getElementById('ztp-dag').textContent     = ZTP_DAG;
+  document.getElementById('ztp-m1-naam').textContent = ZTP_M1_NAAM;
+  document.getElementById('ztp-m1-tag').textContent  = 'Voorlopig';
+  document.getElementById('ztp-m1-val').innerHTML    = ZTP_M1 + unit;
+  document.getElementById('ztp-m2-naam').textContent = ZTP_M2_NAAM;
+  document.getElementById('ztp-m2-val').innerHTML    = ZTP_M2 + unit;
+  document.getElementById('ztp-m3-naam').textContent = ZTP_M3_NAAM;
+  document.getElementById('ztp-m3-val').innerHTML    = ZTP_M3 + unit;
+
+  document.getElementById('ttf-dag').textContent     = TTF_DAG;
+  document.getElementById('ttf-m1-naam').textContent = TTF_M1_NAAM;
+  document.getElementById('ttf-m1-tag').textContent  = 'Voorlopig';
+  document.getElementById('ttf-m1-val').innerHTML    = TTF_M1 + unit;
+  document.getElementById('ttf-m2-naam').textContent = TTF_M2_NAAM;
+  document.getElementById('ttf-m2-val').innerHTML    = TTF_M2 + unit;
+  document.getElementById('ttf-m3-naam').textContent = TTF_M3_NAAM;
+  document.getElementById('ttf-m3-val').innerHTML    = TTF_M3 + unit;
 </script>
 </body>
 </html>
