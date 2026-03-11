@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Gasprijs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --fire:  #ff4500;
+      --ember: #ff8c00;
+      --gold:  #ffd166;
+      --smoke: #16161a;
+      --ash:   #242429;
+      --mist:  #35353e;
+      --pale:  #b0b0c0;
+      --white: #efeff4;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--smoke);
+      color: var(--white);
+      font-family: 'IBM Plex Mono', monospace;
+      overflow: hidden;
+    }
+
+    .screen {
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--ash);
+      border-bottom: 2px solid var(--fire);
+      padding: 0.45rem 0.9rem 0.38rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-shrink: 0;
+    }
+    .h-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.06em;
+    }
+    .h-title span { color: var(--fire); }
+    .h-meta {
+      font-size: 0.56rem;
+      color: var(--pale);
+      text-align: right;
+      line-height: 1.6;
+    }
+    .h-meta strong { color: var(--gold); }
+
+    /* ── SHIP LANE ── */
+    .ship-lane {
+      background: #0d1f2d;
+      border-top: 1px solid #1a3a52;
+      border-bottom: 1px solid #1a3a52;
+      height: 2rem;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+    }
+    /* subtle wave lines */
+    .ship-lane::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 18px,
+        rgba(255,255,255,0.03) 18px,
+        rgba(255,255,255,0.03) 20px
+      );
+    }
+    .ship {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.3rem;
+      line-height: 1;
+      animation: sail 18s linear infinite;
+      white-space: nowrap;
+    }
+    @keyframes sail {
+      from { left: 105%; }
+      to   { left: -8%; }
+    }
+
+    /* ── CONTENT: two equal columns ── */
+    .content {
+      flex: 1 1 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      padding: 0.5rem 0.7rem;
+      overflow: hidden;
+    }
+
+    /* ── HUB COLUMN ── */
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.38rem;
+      overflow: hidden;
+    }
+
+    /* Column header label */
+    .col-head {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+      border-bottom: 1px solid var(--mist);
+      padding-bottom: 0.22rem;
+    }
+    .col-hub {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .col-hub-sub {
+      font-size: 0.44rem;
+      color: var(--pale);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── DAG PRIJS BLOK ── */
+    .dag-block {
+      background: var(--ash);
+      border: 1px solid var(--mist);
+      border-top: 2px solid var(--fire);
+      padding: 0.42rem 0.55rem 0.38rem;
+      flex-shrink: 0;
+    }
+    .dag-lbl {
+      font-size: 0.44rem;
+      letter-spacing: 0.22em;
+      color: var(--ember);
+      text-transform: uppercase;
+      margin-bottom: 0.15rem;
+    }
+    .dag-date {
+      font-size: 0.44rem;
+      color: var(--pale);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.1rem;
+    }
+    .dag-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.1rem;
+      color: var(--white);
+      line-height: 1;
+    }
+    .dag-unit {
+      font-size: 0.45rem;
+      color: var(--ember);
+      letter-spacing: 0.1em;
+    }
+
+
+    /* ── MAAND BLOKKEN ── */
+    .maand-lbl {
+      font-size: 0.44rem;
+      letter-spacing: 0.22em;
+      color: var(--ember);
+      text-transform: uppercase;
+      margin-bottom: 0.18rem;
+      flex-shrink: 0;
+    }
+
+    .mblock {
+      background: var(--ash);
+      border: 1px solid var(--mist);
+      border-left: 3px solid var(--ember);
+      padding: 0.32rem 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .mblock.def {
+      border-left-color: var(--mist);
+    }
+
+    .mblock-left {}
+    .mblock-month {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.82rem;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      line-height: 1;
+    }
+    .mblock-tag {
+      font-size: 0.4rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pale);
+      margin-top: 0.06rem;
+    }
+    .mblock.def .mblock-tag { color: var(--mist); }
+
+    .mblock-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: var(--white);
+      line-height: 1;
+      text-align: right;
+    }
+    .mblock-val small {
+      font-size: 0.38rem;
+      color: var(--ember);
+      margin-left: 0.1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      flex-shrink: 0;
+      border-top: 1px solid var(--mist);
+      padding: 0.26rem 0.7rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.44rem;
+      color: var(--mist);
+      letter-spacing: 0.08em;
+    }
+    footer a { color: var(--ember); text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="screen">
+
+  <!-- HEADER -->
+  <header>
+    <div class="h-title">GAS<span>PRIJS</span></div>
+    <div class="h-meta">
+      <!-- ✏️ DATUM -->
+      Peildatum <strong>11-03-2025</strong><br>
+      EUR/MWh &nbsp;·&nbsp; ZTP · TTF
+    </div>
+  </header>
+
+  <!-- SHIP LANE -->
+  <div class="ship-lane">
+    <div class="ship">🛢️🚢</div>
+  </div>
+
+  <!-- CONTENT: 2 kolommen -->
+  <div class="content">
+
+    <!-- ════ LINKS: ZTP ════ -->
+    <div class="col">
+      <div class="col-head">
+        <div class="col-hub">ZTP</div>
+        <div class="col-hub-sub">Zeebrugge Trading Point</div>
+      </div>
+
+      <!-- Dagprijs ZTP -->
+      <div class="dag-block">
+        <div class="dag-lbl">Dag-ahead</div>
+        <div class="dag-date" id="dag-date-ztp"></div>
+        <div class="dag-price">00,00</div>
+        <div class="dag-unit">EUR / MWh</div>
+      </div>
+
+      <!-- Maandgemiddelden ZTP -->
+      <div class="maand-lbl">Maandgemiddelden</div>
+
+      <div class="mblock">
+        <div class="mblock-left">
+          <!-- ✏️ MAAND -->
+          <div class="mblock-month">Maart 2025</div>
+          <div class="mblock-tag">Voorlopig</div>
+        </div>
+        <!-- ✏️ WAARDE -->
+        <div class="mblock-val">00,00<small>€/MWh</small></div>
+      </div>
+
+      <div class="mblock def">
+        <div class="mblock-left">
+          <!-- ✏️ MAAND -->
+          <div class="mblock-month">Febr. 2025</div>
+          <div class="mblock-tag">Definitief</div>
+        </div>
+        <!-- ✏️ WAARDE -->
+        <div class="mblock-val">00,00<small>€/MWh</small></div>
+      </div>
+
+      <div class="mblock def">
+        <div class="mblock-left">
+          <!-- ✏️ MAAND -->
+          <div class="mblock-month">Jan. 2025</div>
+          <div class="mblock-tag">Definitief</div>
+        </div>
+        <!-- ✏️ WAARDE -->
+        <div class="mblock-val">00,00<small>€/MWh</small></div>
+      </div>
+    </div>
+
+    <!-- ════ RECHTS: TTF ════ -->
+    <div class="col">
+      <div class="col-head">
+        <div class="col-hub">TTF</div>
+        <div class="col-hub-sub">Title Transfer Facility</div>
+      </div>
+
+      <!-- Dagprijs TTF -->
+      <div class="dag-block">
+        <div class="dag-lbl">Dag-ahead</div>
+        <div class="dag-date" id="dag-date-ttf"></div>
+        <div class="dag-price">00,00</div>
+        <div class="dag-unit">EUR / MWh</div>
+      </div>
+
+      <!-- Maandgemiddelden TTF -->
+      <div class="maand-lbl">Maandgemiddelden</div>
+
+      <div class="mblock">
+        <div class="mblock-left">
+          <!-- ✏️ MAAND -->
+          <div class="mblock-month">Maart 2025</div>
+          <div class="mblock-tag">Voorlopig</div>
+        </div>
+        <!-- ✏️ WAARDE -->
+        <div class="mblock-val">00,00<small>€/MWh</small></div>
+      </div>
+
+      <div class="mblock def">
+        <div class="mblock-left">
+          <!-- ✏️ MAAND -->
+          <div class="mblock-month">Febr. 2025</div>
+          <div class="mblock-tag">Definitief</div>
+        </div>
+        <!-- ✏️ WAARDE -->
+        <div class="mblock-val">00,00<small>€/MWh</small></div>
+      </div>
+
+      <div class="mblock def">
+        <div class="mblock-left">
+          <!-- ✏️ MAAND -->
+          <div class="mblock-month">Jan. 2025</div>
+          <div class="mblock-tag">Definitief</div>
+        </div>
+        <!-- ✏️ WAARDE -->
+        <div class="mblock-val">00,00<small>€/MWh</small></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 Gasprijs Monitor · excl. belastingen</span>
+    <span>Bron: <a href="#">ZTP</a> · <a href="#">TTF</a></span>
+  </footer>
+
+</div>
+<script>
+  // Datum van vandaag automatisch invullen
+  const now = new Date();
+  const dag   = String(now.getDate()).padStart(2, '0');
+  const maand = String(now.getMonth() + 1).padStart(2, '0');
+  const jaar  = now.getFullYear();
+  const datumStr = `${dag}-${maand}-${jaar}`;
+  document.querySelectorAll('#dag-date-ztp, #dag-date-ttf').forEach(el => {
+    el.textContent = datumStr;
+  });
+</script>
+</body>
+</html>
