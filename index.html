@@ -221,6 +221,134 @@
       margin-left: 0.1rem;
     }
 
+    /* ── TARIEFFORMULE ── */
+    .formule-bar {
+      flex-shrink: 0;
+      background: var(--ash);
+      border-top: 2px solid var(--ember);
+      padding: 0.55rem 0.7rem 0.6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .formule-lbl {
+      font-size: 0.52rem;
+      letter-spacing: 0.25em;
+      color: var(--ember);
+      text-transform: uppercase;
+    }
+    .formule-expr {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 0.55rem;
+    }
+    .formule-op {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--pale);
+      flex-shrink: 0;
+      line-height: 1;
+      padding-bottom: 0.15rem;
+    }
+    .formule-field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .formule-field-lbl {
+      font-size: 0.46rem;
+      letter-spacing: 0.14em;
+      color: var(--pale);
+      text-transform: uppercase;
+      margin-bottom: 0.18rem;
+    }
+    .formule-input {
+      background: var(--smoke);
+      border: 1px solid var(--mist);
+      border-bottom: 2px solid var(--ember);
+      color: var(--white);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      width: 5.8rem;
+      text-align: center;
+      padding: 0.12rem 0.2rem;
+      outline: none;
+      -moz-appearance: textfield;
+      line-height: 1;
+    }
+    .formule-input::-webkit-outer-spin-button,
+    .formule-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .formule-input:focus { border-bottom-color: var(--gold); color: var(--gold); }
+    .formule-select {
+      background: var(--smoke);
+      border: 1px solid var(--mist);
+      border-bottom: 2px solid var(--ember);
+      color: var(--white);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      width: 5rem;
+      text-align: center;
+      padding: 0.12rem 0.15rem;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      line-height: 1;
+    }
+    .formule-select:focus { border-bottom-color: var(--gold); }
+    .formule-ztp {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .formule-ztp-lbl {
+      font-size: 0.46rem;
+      letter-spacing: 0.14em;
+      color: var(--pale);
+      text-transform: uppercase;
+      margin-bottom: 0.18rem;
+    }
+    .formule-ztp-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--pale);
+      line-height: 1;
+    }
+    .formule-result {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      background: var(--smoke);
+      border: 1px solid var(--mist);
+      border-bottom: 3px solid var(--fire);
+      padding: 0.18rem 0.8rem 0.22rem;
+      min-width: 5.5rem;
+    }
+    .formule-result-lbl {
+      font-size: 0.46rem;
+      letter-spacing: 0.14em;
+      color: var(--ember);
+      text-transform: uppercase;
+      margin-bottom: 0.1rem;
+    }
+    .formule-result-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .formule-result-unit {
+      font-size: 0.42rem;
+      color: var(--ember);
+      letter-spacing: 0.1em;
+      margin-top: 0.04rem;
+    }
+
     /* ── FOOTER ── */
     footer {
       flex-shrink: 0;
@@ -329,6 +457,44 @@
 
   </div><!-- /content -->
 
+  <!-- TARIEFFORMULE -->
+  <div class="formule-bar">
+    <div class="formule-lbl">Tariefformule &nbsp;·&nbsp; Marge + Factor × ZTP = Totaal</div>
+    <div class="formule-expr">
+
+      <div class="formule-field">
+        <div class="formule-field-lbl">Marge</div>
+        <input class="formule-input" id="f-marge" type="text" inputmode="decimal" value="0,3860" maxlength="7" />
+      </div>
+
+      <div class="formule-op">+</div>
+
+      <div class="formule-field">
+        <div class="formule-field-lbl">Factor</div>
+        <select class="formule-select" id="f-factor">
+          <option value="1.020" selected>1,020</option>
+          <option value="1.000">1,000</option>
+        </select>
+      </div>
+
+      <div class="formule-op">×</div>
+
+      <div class="formule-ztp">
+        <div class="formule-ztp-lbl">ZTP gem.</div>
+        <div class="formule-ztp-val" id="f-ztp">—</div>
+      </div>
+
+      <div class="formule-op">=</div>
+
+      <div class="formule-result">
+        <div class="formule-result-lbl">Totaal</div>
+        <div class="formule-result-val" id="f-totaal">—</div>
+        <div class="formule-result-unit">€ / kWh</div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer>
     <span>© 2025 Gasprijs Monitor · excl. belastingen</span>
@@ -391,6 +557,26 @@
   document.getElementById('ttf-m2-val').innerHTML    = TTF_M2 + unit;
   document.getElementById('ttf-m3-naam').textContent = TTF_M3_NAAM;
   document.getElementById('ttf-m3-val').innerHTML    = TTF_M3 + unit;
+
+  // ── TARIEFFORMULE ──
+  // ZTP_M1 is het voorlopige maandgemiddelde (komma als decimaalteken)
+  const ztpGem = parseFloat(ZTP_M1.replace(',', '.'));
+  document.getElementById('f-ztp').textContent = isNaN(ztpGem) ? '—' : ZTP_M1;
+
+  function berekenTarief() {
+    const margeStr = document.getElementById('f-marge').value.replace(',', '.');
+    const marge    = parseFloat(margeStr);
+    const factor   = parseFloat(document.getElementById('f-factor').value);
+    const el       = document.getElementById('f-totaal');
+    if (isNaN(marge) || isNaN(ztpGem)) { el.textContent = '—'; return; }
+    // Formule: (marge + factor * ZTP_MWh) / 1000  →  €/kWh
+    const totaal = marge + factor * (ztpGem / 1000);
+    el.textContent = totaal.toFixed(2).replace('.', ',');
+  }
+
+  document.getElementById('f-marge').addEventListener('input', berekenTarief);
+  document.getElementById('f-factor').addEventListener('change', berekenTarief);
+  berekenTarief(); // direct berekenen bij laden
 </script>
 </body>
 </html>
