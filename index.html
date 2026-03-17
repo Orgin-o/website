@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>Gasprijs</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Wat is uw energieprijs?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --fire:  #ff4500;
@@ -28,503 +28,394 @@
       height: 100dvh;
       display: flex;
       flex-direction: column;
+      padding: clamp(0.6rem, 2.5vw, 1.4rem) clamp(0.8rem, 4vw, 2rem);
+      gap: clamp(0.5rem, 1.8vw, 1rem);
       overflow: hidden;
     }
 
-    /* HEADER */
-    header {
-      background: var(--ash);
-      border-bottom: 2px solid var(--fire);
-      padding: clamp(0.4rem,2vw,0.9rem) 4vw;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
+    /* TITEL */
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.6rem, 6vw, 3rem);
+      letter-spacing: 0.06em;
+      color: var(--white);
+      line-height: 1;
       flex-shrink: 0;
     }
-    .h-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.4rem,5vw,2rem); letter-spacing:.06em; }
-    .h-title span { color:var(--fire); }
-    .h-meta { font-size:clamp(0.52rem,1.5vw,0.75rem); color:var(--pale); text-align:right; line-height:1.7; }
-    .h-meta strong { color:var(--gold); }
+    .page-title span { color: var(--fire); }
 
-    /* INFO BAR */
-    .info-bar { flex-shrink:0; background:var(--ash); border-bottom:1px solid var(--mist); }
-    .info-trigger {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:clamp(0.28rem,1vw,0.5rem) 4vw;
-      cursor:pointer; user-select:none;
-    }
-    .info-trigger-lbl { font-size:clamp(0.5rem,1.5vw,0.72rem); letter-spacing:.14em; color:var(--ember); text-transform:uppercase; }
-    .info-trigger-lbl span { color:var(--pale); }
-    .info-chevron { font-size:clamp(0.5rem,1.5vw,0.72rem); color:var(--ember); transition:transform .2s; }
-    .info-bar.open .info-chevron { transform:rotate(180deg); }
-    .info-body { display:none; padding:0 4vw clamp(0.5rem,2vw,1rem); max-width:640px; }
-    .info-bar.open .info-body { display:block; }
-    .info-body p { font-size:clamp(0.5rem,1.5vw,0.72rem); color:var(--pale); line-height:1.7; margin-bottom:.35rem; }
-    .info-body p:last-child { margin-bottom:0; }
-    .info-body strong { color:var(--white); }
-    .info-body em { color:var(--gold); font-style:normal; }
-    .info-formula { font-family:'Bebas Neue',sans-serif; font-size:clamp(0.85rem,2.8vw,1.3rem); color:var(--gold); letter-spacing:.08em; margin:.3rem 0; }
-    .info-steps-lbl { font-size:clamp(0.44rem,1.3vw,0.62rem); letter-spacing:.18em; color:var(--ember); text-transform:uppercase; margin:.4rem 0 .1rem; }
-
-    /* SCROLL AREA */
-    .main {
-      flex:1 1 0; overflow-y:auto; overflow-x:hidden;
-      padding:clamp(0.7rem,2.5vw,1.4rem) 4vw clamp(1rem,4vw,2rem);
-      display:flex; flex-direction:column; gap:clamp(1rem,3.5vw,2rem);
+    /* TWEEDELING */
+    .cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto auto auto auto auto;
+      gap: clamp(0.35rem, 1.2vw, 0.7rem) clamp(0.6rem, 2vw, 1.2rem);
+      flex: 1 1 0;
+      min-height: 0;
     }
 
-    /* STAP BLOK */
-    .step { display:flex; flex-direction:column; gap:clamp(0.4rem,1.2vw,0.7rem); }
-    .step-header { display:flex; align-items:baseline; gap:.6rem; border-bottom:1px solid var(--mist); padding-bottom:.3rem; }
-    .step-num { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,6vw,2.8rem); color:var(--fire); line-height:1; flex-shrink:0; }
-    .step-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(1rem,3.5vw,1.7rem); color:var(--white); line-height:1; letter-spacing:.05em; }
-    .step-hint { font-size:clamp(0.48rem,1.4vw,0.68rem); color:#666677; letter-spacing:.05em; line-height:1.5; }
-    .step-hint em { color:var(--ember); font-style:normal; }
+    /* LUIK — elke kolom gebruikt de gedeelde grid-rijen via subgrid */
+    .luik {
+      display: grid;
+      grid-row: 1 / -1;
+      grid-template-rows: subgrid;
+      background: var(--ash);
+      border: 1px solid var(--mist);
+      border-top: 3px solid var(--ember);
+      padding: clamp(0.5rem, 2vw, 1.1rem) clamp(0.6rem, 2.5vw, 1.3rem);
+      gap: 0;
+      row-gap: clamp(0.35rem, 1.2vw, 0.7rem);
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    .luik-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.1rem, 3.5vw, 1.8rem);
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .luik-tekst {
+      font-size: clamp(0.52rem, 1.5vw, 0.75rem);
+      color: var(--pale);
+      line-height: 1.6;
+      flex-shrink: 0;
+    }
 
-    /* ── STAP 1: DRIE KNOPPEN ── */
-    .hub-group { display:flex; gap:0; }
-    .hub-btn {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(1.2rem,4.5vw,2rem);
-      letter-spacing:.1em;
-      padding:clamp(0.3rem,1.5vw,0.7rem) clamp(1rem,6vw,2.8rem);
-      border:2px solid var(--mist);
-      background:var(--smoke);
-      color:#555566;
-      cursor:pointer;
-      transition:all .15s;
+    .formule-display-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.1rem, 0.4vw, 0.2rem);
     }
-    .hub-btn.active { background:var(--ash); color:var(--gold); border-color:var(--ember) !important; border-width:2px !important; }
-    .hub-sub { font-size:clamp(0.5rem,1.5vw,0.72rem); color:var(--pale); margin-top:.2rem; letter-spacing:.05em; min-height:1em; }
+    /* FORMULE DISPLAY */
+    .formule-display {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(0.7rem, 2.2vw, 1.1rem);
+      color: var(--pale);
+      letter-spacing: 0.05em;
+      background: var(--smoke);
+      border: 1px solid var(--mist);
+      padding: clamp(0.3rem, 1vw, 0.6rem) clamp(0.4rem, 1.2vw, 0.7rem);
+      flex-shrink: 0;
+      line-height: 1.5;
+    }
+    .formule-display .hl { color: var(--gold); }
+    .formule-display .dim { color: var(--mist); }
 
-    /* ── STAP 2: FORMULE ── */
-    .formule-card {
-      background:var(--ash);
-      border:1px solid var(--mist);
-      border-top:3px solid var(--ember);
-      padding:clamp(0.7rem,2.5vw,1.4rem) clamp(0.8rem,3vw,1.6rem);
-      display:flex;
-      flex-direction:column;
-      gap:clamp(0.5rem,1.5vw,0.9rem);
+    /* INVULVELDEN */
+    .velden {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.25rem, 0.8vw, 0.4rem);
+      align-self: center;
     }
-    .formule-card-lbl {
-      font-size:clamp(0.48rem,1.4vw,0.68rem);
-      letter-spacing:.2em;
-      color:var(--ember);
-      text-transform:uppercase;
+    .veld-rij {
+      display: flex;
+      align-items: center;
+      gap: clamp(0.3rem, 1vw, 0.5rem);
     }
-    /* de formule-rij */
-    .f-row {
-      display:flex;
-      align-items:flex-end;
-      gap:clamp(0.3rem,1.5vw,0.8rem);
-      flex-wrap:nowrap;
+    .veld-lbl {
+      font-size: clamp(0.48rem, 1.4vw, 0.68rem);
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      min-width: clamp(3.5rem, 10vw, 5.5rem);
+      flex-shrink: 0;
     }
-    .f-field { display:flex; flex-direction:column; gap:.15rem; }
-    /* groot invulveld — duidelijk bewerkbaar */
-    .f-input {
-      background:var(--smoke);
-      border:2px solid var(--ember);
-      border-radius:4px;
-      color:var(--white);
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(1.1rem,4vw,1.8rem);
-      width:clamp(3.8rem,14vw,6.5rem);
-      text-align:center;
-      padding:.05rem .1rem;
-      outline:none;
-      line-height:1;
-      -moz-appearance:textfield;
-      caret-color:var(--gold);
+    .veld-input {
+      background: var(--smoke);
+      border: 2px solid var(--ember);
+      border-radius: 3px;
+      color: var(--white);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1rem, 3.5vw, 1.6rem);
+      width: clamp(4rem, 14vw, 7rem);
+      text-align: center;
+      padding: 0.05rem 0.15rem;
+      outline: none;
+      line-height: 1;
+      -moz-appearance: textfield;
+      caret-color: var(--gold);
     }
-    .f-input::-webkit-outer-spin-button,
-    .f-input::-webkit-inner-spin-button { -webkit-appearance:none; }
-    .f-input:focus { border-color:var(--gold); color:var(--gold); }
-    .f-select {
-      background:var(--smoke);
-      border:2px solid var(--ember);
-      border-radius:4px;
-      color:var(--white);
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(1.1rem,4vw,1.8rem);
-      width:clamp(3.4rem,12vw,5.5rem);
-      text-align:center;
-      padding:.05rem .05rem;
-      outline:none;
-      cursor:pointer;
-      -webkit-appearance:none; appearance:none;
-      line-height:1;
+    .veld-input::-webkit-outer-spin-button,
+    .veld-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .veld-input:focus { border-color: var(--gold); color: var(--gold); }
+    .veld-select {
+      background: var(--smoke);
+      border: 2px solid var(--ember);
+      border-radius: 3px;
+      color: var(--white);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1rem, 3.5vw, 1.6rem);
+      width: clamp(3.5rem, 12vw, 6rem);
+      text-align: center;
+      text-align-last: center;
+      padding: 0;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none; appearance: none;
+      line-height: normal;
+      display: block;
+      height: clamp(1.6rem, 6vw, 3rem);
     }
-    .f-select:focus { border-color:var(--gold); }
-    .f-op {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(1rem,3.5vw,1.8rem);
-      color:var(--pale);
-      flex-shrink:0;
-      padding-bottom:.05rem;
+    .veld-select:focus { border-color: var(--gold); }
+    .veld-unit {
+      font-size: clamp(0.44rem, 1.2vw, 0.6rem);
+      color: var(--mist);
+      letter-spacing: 0.06em;
     }
-    .f-gem-block { display:flex; flex-direction:column; gap:.15rem; }
-    .f-gem-val {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(1.1rem,4vw,1.8rem);
-      color:var(--gold);
-      line-height:1;
-      border:2px solid var(--mist);
-      border-radius:4px;
-      padding:.05rem .3rem;
-      min-width:clamp(3.5rem,13vw,6rem);
-      text-align:center;
-    }
-    /* resultaat */
-    .f-result-block {
-      border-left:2px solid var(--mist);
-      padding-left:clamp(0.3rem,1.5vw,0.8rem);
-      display:flex; flex-direction:column; gap:.1rem;
-    }
-    .f-result-lbl { font-size:clamp(0.42rem,1.2vw,0.6rem); color:var(--ember); letter-spacing:.12em; text-transform:uppercase; }
-    .f-result-val {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(1.3rem,5vw,2.4rem);
-      color:var(--gold);
-      line-height:1;
-    }
-    .f-result-unit { font-size:clamp(0.42rem,1.2vw,0.6rem); color:var(--ember); letter-spacing:.08em; }
-    .f-lbl {
-      font-size:clamp(0.42rem,1.2vw,0.6rem);
-      letter-spacing:.1em;
-      text-transform:uppercase;
-      color:var(--gold);
-      display:flex; align-items:center; gap:.2rem;
-    }
-    .f-lbl .pencil { color:var(--ember); font-size:.9em; }
 
-    /* VAST CONTRACT KAART */
-    .vast-card {
-      display:none;
-      background:var(--smoke);
-      border:1px solid var(--mist);
-      border-left:4px solid var(--mist);
-      padding:clamp(0.6rem,2vw,1.1rem) clamp(0.8rem,2.5vw,1.4rem);
-      flex-direction:column;
-      gap:.2rem;
-      align-self:flex-start;
+    /* INDEX SWITCH */
+    .index-switch { display: flex; gap: 0; }
+    .idx-btn {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(0.9rem, 3vw, 1.4rem);
+      letter-spacing: 0.1em;
+      padding: clamp(0.1rem, 0.5vw, 0.3rem) clamp(0.5rem, 2vw, 1rem);
+      border: 2px solid var(--mist);
+      background: var(--smoke);
+      color: #555566;
+      cursor: pointer;
+      transition: all 0.12s;
     }
-    .vast-card.zichtbaar { display:flex; }
-    .vast-card-lbl { font-size:clamp(0.48rem,1.4vw,0.68rem); letter-spacing:.18em; color:var(--ember); text-transform:uppercase; }
-    .vast-card-naam { font-family:'Bebas Neue',sans-serif; font-size:clamp(1rem,3.5vw,1.6rem); color:var(--pale); line-height:1; }
-    .vast-card-prijs { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,6vw,2.8rem); color:var(--gold); line-height:1; }
-    .vast-card-unit { font-size:clamp(0.44rem,1.2vw,0.62rem); color:#555566; letter-spacing:.08em; }
+    .idx-btn:first-child { border-right: 1px solid var(--mist); border-radius: 3px 0 0 3px; }
+    .idx-btn:last-child  { border-left: none; border-radius: 0 3px 3px 0; }
+    .idx-btn.active { background: var(--ash); color: var(--gold); border-color: var(--ember) !important; }
 
-    /* ── STAP 3: MARKTDATA ── */
-    .markt-row {
-      display:flex; gap:clamp(0.4rem,1.5vw,0.8rem); flex-wrap:wrap; align-items:flex-start;
+    /* RESULTAAT */
+    .resultaat {
+      border-top: 1px solid var(--mist);
+      padding-top: clamp(0.3rem, 1vw, 0.5rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.1rem, 0.4vw, 0.2rem);
+      flex-shrink: 0;
     }
-    .dag-block {
-      background:var(--ash);
-      border:1px solid var(--mist);
-      border-top:3px solid var(--fire);
-      padding:clamp(0.3rem,1vw,0.6rem) clamp(0.5rem,1.8vw,1rem);
-      display:flex; flex-direction:column;
+    .resultaat-lbl {
+      font-size: clamp(0.48rem, 1.4vw, 0.68rem);
+      color: var(--ember);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
     }
-    .dag-lbl  { font-size:clamp(0.44rem,1.2vw,0.62rem); letter-spacing:.2em; color:var(--ember); text-transform:uppercase; }
-    .dag-date { font-size:clamp(0.44rem,1.2vw,0.62rem); color:var(--pale); letter-spacing:.08em; }
-    .dag-price { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.6rem,6vw,3rem); color:var(--white); line-height:1; }
-    .dag-unit { font-size:clamp(0.44rem,1.2vw,0.62rem); color:var(--ember); letter-spacing:.1em; }
+    .resultaat-box {
+      background: var(--smoke);
+      border: 1px solid var(--mist);
+      padding: clamp(0.3rem, 1vw, 0.6rem) clamp(0.5rem, 1.8vw, 0.9rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.05rem, 0.2vw, 0.1rem);
+    }
+    .resultaat-prijs {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 7vw, 3.5rem);
+      color: var(--gold);
+      line-height: 1;
+    }
+    .resultaat-unit {
+      font-size: clamp(0.48rem, 1.4vw, 0.68rem);
+      color: var(--ember);
+      letter-spacing: 0.08em;
+    }
+    .disclaimer {
+      font-size: clamp(0.55rem, 1.5vw, 0.75rem);
+      color: var(--pale);
+      line-height: 1.6;
+      overflow-y: auto;
+    }
 
-    .mblock {
-      background:var(--ash);
-      border:1px solid var(--mist);
-      padding:clamp(0.5rem,2vw,1rem) clamp(0.7rem,2.5vw,1.4rem);
-      flex:1 1 auto;
+    /* VAST LUIK */
+    .vast-ref {
+      background: var(--smoke);
+      border: 1px solid var(--mist);
+      padding: clamp(0.4rem, 1.5vw, 0.8rem) clamp(0.5rem, 2vw, 1rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.1rem, 0.4vw, 0.2rem);
+      flex-shrink: 0;
+      align-self: flex-start;
     }
-    .mblock-tag  { font-size:clamp(0.5rem,1.6vw,0.75rem); letter-spacing:.12em; text-transform:uppercase; color:var(--pale); margin-bottom:.15rem; }
-    .mblock-month { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.1rem,4vw,2rem); color:var(--white); line-height:1; }
-    .mblock-val  { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.8rem,7vw,3.2rem); color:var(--gold); line-height:1; }
-    .mblock-val small { font-size:clamp(0.5rem,1.6vw,0.75rem); color:var(--ember); margin-left:.1rem; }
-
-    .historiek-lbl { font-size:clamp(0.44rem,1.3vw,0.62rem); letter-spacing:.2em; color:var(--mist); text-transform:uppercase; margin-top:.3rem; }
-    .mblock.hist { background:#1c1c20; border-left-color:#2a2a32; padding:clamp(0.2rem,.8vw,.4rem) clamp(0.5rem,2vw,1rem); }
-    .mblock.hist .mblock-month { font-size:clamp(0.75rem,2.8vw,1.3rem); color:#555566; }
-    .mblock.hist .mblock-tag   { color:#35353e; }
-    .mblock.hist .mblock-val   { font-size:clamp(1rem,4vw,1.8rem); color:#555566; }
-    .mblock.hist .mblock-val small { color:#444450; }
+    .vast-ref-lbl { font-size: clamp(0.44rem, 1.2vw, 0.62rem); color: var(--ember); letter-spacing: 0.16em; text-transform: uppercase; }
+    .vast-ref-naam { font-family: 'Bebas Neue', sans-serif; font-size: clamp(0.9rem, 3vw, 1.4rem); color: var(--pale); line-height: 1; }
+    .vast-ref-prijs { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem, 7vw, 3.5rem); color: var(--gold); line-height: 1; }
+    .vast-ref-unit { font-size: clamp(0.44rem, 1.2vw, 0.62rem); color: var(--ember); letter-spacing: 0.08em; }
 
     /* FOOTER */
     footer {
-      flex-shrink:0; border-top:1px solid var(--mist);
-      padding:clamp(.2rem,1vw,.4rem) 4vw;
-      display:flex; justify-content:space-between;
-      font-size:clamp(.44rem,1.3vw,.62rem); color:var(--mist); letter-spacing:.08em;
+      flex-shrink: 0;
+      font-size: clamp(0.42rem, 1.2vw, 0.6rem);
+      color: var(--mist);
+      letter-spacing: 0.08em;
+      text-align: center;
     }
-    footer a { color:var(--ember); text-decoration:none; }
+    footer a { color: var(--ember); text-decoration: none; }
   </style>
 </head>
 <body>
 <div class="screen">
 
-  <!-- HEADER -->
-  <header>
-    <div class="h-title">GAS<span>PRIJS</span></div>
-    <div class="h-meta">Geactualiseerd op <strong id="hdr-datum"></strong><br>EUR/MWh</div>
-  </header>
+  <div class="page-title">Wat is uw <span>energieprijs</span>?</div>
 
-  <!-- INFO BAR -->
-  <div class="info-bar" id="info-bar">
-    <div class="info-trigger" onclick="document.getElementById('info-bar').classList.toggle('open')">
-      <div class="info-trigger-lbl">ℹ️ Hoe werkt de <span>energieprijs</span>?</div>
-      <div class="info-chevron">▼</div>
+  <div class="cols">
+
+    <!-- ═══ LUIK 1: VARIABEL ═══ -->
+    <div class="luik">
+      <div class="luik-title">Variabel contract</div>
+      <div class="luik-tekst">Hoeveel u per kWh betaalt hangt af van de tariefformule in uw contract en een eventuele commerciële korting.<br><br>De tariefformule staat ergens in kleine lettertjes op uw contract en op de facturen.</div>
+
+      <div class="formule-display-wrapper">
+        <div class="resultaat-lbl">Uw energieprijs =</div>
+        <div class="formule-display">
+          <span class="hl">Marge</span> + (<span class="hl">Factor</span> × <span class="hl">Index</span>) − <span class="hl">Korting</span>
+        </div>
+      </div>
+
+      <div class="velden">
+        <div class="veld-rij">
+          <div class="veld-lbl">Marge</div>
+          <input class="veld-input" id="f-marge" type="text" inputmode="decimal" value="0,3860" maxlength="7"/>
+          <div class="veld-unit">ct/kWh</div>
+        </div>
+        <div class="veld-rij">
+          <div class="veld-lbl">Factor</div>
+          <select class="veld-select" id="f-factor">
+            <option value="1.020" selected>1,020</option>
+            <option value="1.000">1,000</option>
+          </select>
+          <div class="veld-unit">&nbsp;</div>
+        </div>
+        <div class="veld-rij">
+          <div class="veld-lbl">Index</div>
+          <div class="index-switch">
+            <button class="idx-btn active" id="btn-ztp" onclick="kiesIndex('ztp')">ZTP</button>
+            <button class="idx-btn"        id="btn-ttf" onclick="kiesIndex('ttf')">TTF</button>
+          </div>
+          <div class="veld-unit" id="index-val" style="color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,3.5vw,1.6rem);"></div>
+        </div>
+        <div class="veld-rij">
+          <div class="veld-lbl">Korting</div>
+          <input class="veld-input" id="f-korting" type="text" inputmode="decimal" value="0,0000" maxlength="7"/>
+          <div class="veld-unit">ct/kWh</div>
+        </div>
+      </div>
+
+      <div class="resultaat">
+        <div class="resultaat-lbl">Uw energieprijs</div>
+        <div class="resultaat-box">
+          <div class="resultaat-prijs" id="f-uitkomst">—</div>
+          <div class="resultaat-unit">ct / kWh</div>
+          <div style="font-size:clamp(0.44rem,1.2vw,0.62rem);color:var(--ember);letter-spacing:0.08em;margin-top:0.1rem;" id="voorlopig-lbl"></div>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong style="color:var(--gold);">Marge</strong> — vrij te kiezen door de leverancier.<br>
+        <strong style="color:var(--gold);">Factor</strong> — vrij te kiezen door de leverancier. Hoe groter de factor, hoe meer de index doorweegt in de energieprijs.<br>
+        <strong style="color:var(--gold);">Index</strong> — het gemiddelde van de dagelijkse slotkoersen op de markt gedurende de lopende kalendermaand. De definitieve waarde is pas bekend na afloop van de maand. ZTP = Gasbeurs Zeebrugge · TTF = Amsterdamse gasbeurs.<br>
+        <strong style="color:var(--gold);">Korting</strong> — bij het afsluiten van een contract kan de leverancier een korting per kWh geven. Meestal enkel voor nieuwe klanten.<br>
+        <strong style="color:var(--gold);">Uw energieprijs</strong> — een schatting op basis van de reeds bekende slotkoersen van de lopende maand.
+      </div>
     </div>
-    <div class="info-body">
-      <p>Uw gasfactuur bestaat uit twee delen: de <strong>energieprijs</strong> en <strong>vaste kosten</strong> (nettarieven en heffingen). De vaste kosten hangen af van verbruik en woonplaats, maar <em>niet</em> van de leverancier. Vergelijk leveranciers op basis van de <strong>energieprijs per kWh</strong>. <em>(In mindere mate spelen ook abonnementsgeld en tijdelijke acties een rol.)</em></p>
-      <p>Bij een <strong>vast contract</strong> staat de energieprijs op de tariefkaart en wijzigt niet tijdens de looptijd. <em>(Let op: automatische verlenging aan dan geldende voorwaarden.)</em></p>
-      <p>Bij een <strong>variabel contract</strong> wordt de energieprijs maandelijks herberekend:</p>
-      <div class="info-formula">Marge + (Factor × Marktindex) = Energieprijs</div>
-      <p>Marge en factor worden door de leverancier bepaald en blijven gelijk. De marktindex (<strong>ZTP</strong> of <strong>TTF</strong>) is het maandgemiddelde van alle dagelijkse slotkoersen. De definitieve prijs is pas bekend <strong>na afloop</strong> van de maand — hieronder ziet u een voorlopige indicatie.</p>
-      <div class="info-steps-lbl">Zo gebruikt u deze pagina</div>
-      <p><em>Stap 1</em> — Kies uw contracttype: ZTP, TTF, of vast.</p>
-      <p><em>Stap 2</em> — Vul marge en factor in (variabel) of zie de vaste prijs (vast).</p>
-      <p><em>Stap 3</em> — Bekijk de actuele marktprijzen en historiek.</p>
+
+    <!-- ═══ LUIK 2: VAST ═══ -->
+    <div class="luik">
+      <div class="luik-title">Vast contract</div>
+      <div class="luik-tekst">Hoeveel u per kWh betaalt staat in uw contract en blijft ongewijzigd voor de duurtijd van het contract (meestal 1 jaar).<br><br>Let op: het contract wordt automatisch verlengd maar dan aan nieuwe voorwaarden!</div>
+
+      <div class="formule-display-wrapper">
+        <div class="resultaat-lbl">Uw energieprijs =</div>
+        <div class="formule-display">
+          <span class="hl">Prijs</span> − <span class="hl">Korting</span>
+        </div>
+      </div>
+
+      <div class="velden">
+        <div class="veld-rij">
+          <div class="veld-lbl">Prijs</div>
+          <input class="veld-input" id="v-prijs" type="text" inputmode="decimal" value="5,22" maxlength="7"/>
+          <div class="veld-unit">ct/kWh</div>
+        </div>
+        <div class="veld-rij">
+          <div class="veld-lbl">Korting</div>
+          <input class="veld-input" id="v-korting" type="text" inputmode="decimal" value="0,0000" maxlength="7"/>
+          <div class="veld-unit">ct/kWh</div>
+        </div>
+      </div>
+
+      <div class="resultaat">
+        <div class="resultaat-lbl">Uw energieprijs</div>
+        <div class="resultaat-box">
+          <div class="resultaat-prijs" id="v-uitkomst">—</div>
+          <div class="resultaat-unit">ct / kWh</div>
+          <div style="font-size:clamp(0.44rem,1.2vw,0.62rem);color:var(--ember);letter-spacing:0.08em;margin-top:0.1rem;">Definitief · tot einde van uw contract</div>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong style="color:var(--gold);">Prijs</strong> — de vaste energieprijs per kWh zoals vermeld op uw tariefkaart. Referentie: Engie vast = 5,22 ct/kWh.<br>
+        <strong style="color:var(--gold);">Korting</strong> — bij het afsluiten van een contract kan de leverancier een korting per kWh geven. Meestal enkel voor nieuwe klanten.<br>
+        <strong style="color:var(--gold);">Uw energieprijs</strong> — uw effectieve energieprijs na aftrek van de korting.
+      </div>
     </div>
+
   </div>
 
-  <!-- MAIN -->
-  <div class="main">
-
-    <!-- STAP 1 -->
-    <div class="step">
-      <div class="step-header">
-        <div class="step-num">1</div>
-        <div>
-          <div class="step-title">Kies uw contracttype</div>
-          <div class="step-hint">Volgt uw variabel contract <em>ZTP</em> of <em>TTF</em>? Of heeft u een <em>vast contract</em>?</div>
-        </div>
-      </div>
-      <div>
-        <div style="display:flex;align-items:flex-end;gap:clamp(0.5rem,2vw,1rem);">
-        <div>
-          <div style="font-size:clamp(0.42rem,1.3vw,0.62rem);letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin-bottom:clamp(0.1rem,0.4vw,0.2rem);">Variabel</div>
-          <div style="display:flex;gap:0;">
-            <button class="hub-btn active" id="btn-ztp" onclick="kiesHub('ztp')" style="border-radius:3px 0 0 3px;border-right:1px solid var(--mist);">ZTP</button>
-            <button class="hub-btn"        id="btn-ttf" onclick="kiesHub('ttf')" style="border-radius:0 3px 3px 0;border-left:none;">TTF</button>
-          </div>
-        </div>
-        <div>
-          <div style="font-size:clamp(0.42rem,1.3vw,0.62rem);letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin-bottom:clamp(0.1rem,0.4vw,0.2rem);">Vast</div>
-          <button class="hub-btn" id="btn-vast" onclick="kiesHub('vast')" style="border-radius:3px;border:2px solid var(--mist);">Vast</button>
-        </div>
-      </div>
-        <div class="hub-sub" id="hub-sub">Zeebrugge Trading Point</div>
-      </div>
-      <div class="markt-row" id="markt-row">
-        <div class="mblock" style="display:flex;flex-direction:row;align-items:stretch;gap:0;padding:0;overflow:hidden;">
-          <div style="padding:clamp(0.5rem,2vw,1rem) clamp(0.7rem,2.5vw,1.4rem);flex:1 1 auto;">
-            <div class="mblock-tag">Voorlopige marktindex</div>
-            <div class="mblock-month" id="m1-naam"></div>
-            <div class="mblock-val" id="m1-val"></div>
-          </div>
-          <div style="border-left:1px solid var(--mist);padding:clamp(0.4rem,1.5vw,0.8rem) clamp(0.6rem,2vw,1.1rem);display:flex;flex-direction:column;justify-content:center;background:#1c1c20;min-width:0;">
-            <div class="mblock-tag" style="color:var(--white);">Dagkoers</div>
-            <div style="font-size:clamp(0.4rem,1.2vw,0.6rem);color:var(--white);letter-spacing:.08em;margin-bottom:.15rem;" id="dag-datum"></div>
-            <div id="dag-prijs" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,4vw,1.8rem);color:var(--gold);line-height:1;"></div>
-          </div>
-          <div style="border-left:1px solid var(--mist);padding:clamp(0.4rem,1.5vw,0.8rem) clamp(0.5rem,2vw,1rem);display:flex;flex-direction:column;justify-content:center;background:#1c1c20;min-width:0;">
-            <div class="mblock-tag" style="color:#35353e;">Definitief</div>
-            <div class="mblock-month" id="m2-naam" style="color:#555566;font-size:clamp(0.8rem,3vw,1.5rem);"></div>
-            <div class="mblock-val" id="m2-val" style="color:#555566;font-size:clamp(1.2rem,5vw,2.4rem);"></div>
-          </div>
-          <div style="border-left:1px solid var(--mist);padding:clamp(0.4rem,1.5vw,0.8rem) clamp(0.5rem,2vw,1rem);display:flex;flex-direction:column;justify-content:center;background:#1c1c20;min-width:0;">
-            <div class="mblock-tag" style="color:#35353e;">Definitief</div>
-            <div class="mblock-month" id="m3-naam" style="color:#555566;font-size:clamp(0.8rem,3vw,1.5rem);"></div>
-            <div class="mblock-val" id="m3-val" style="color:#555566;font-size:clamp(1.2rem,5vw,2.4rem);"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="display:grid;">
-    <div class="step" id="stap2-variabel" style="grid-area:1/1;">
-      <div class="step-header">
-        <div class="step-num">2</div>
-        <div>
-          <div class="step-title">Uw tariefformule</div>
-          <div class="step-hint">Vul <em>marge</em> en <em>factor</em> in uit uw contract. De marktindex (<span id="s2-hub">ZTP</span>) is automatisch ingevuld.</div>
-        </div>
-      </div>
-      <div class="formule-card">
-        <div class="formule-card-lbl">Variabele tariefformule — uw contract</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(0.7rem,2.5vw,1.1rem);color:var(--pale);letter-spacing:.06em;margin-bottom:clamp(0.1rem,0.5vw,0.3rem);">Marge + (Factor × Index) − Korting = Energieprijs <span style="font-size:.8em;color:var(--ember);">ct/kWh</span></div>
-        <div class="f-row">
-          <div class="f-field">
-            <div class="f-lbl"><span class="pencil">✎</span> Marge</div>
-            <input class="f-input" id="f-marge" type="text" inputmode="decimal" value="0,3860" maxlength="7" />
-          </div>
-          <div class="f-op">+</div>
-          <div class="f-field">
-            <div class="f-lbl"><span class="pencil">✎</span> Factor</div>
-            <select class="f-select" id="f-factor">
-              <option value="1.020" selected>1,020</option>
-              <option value="1.000">1,000</option>
-            </select>
-          </div>
-          <div class="f-op">×</div>
-          <div class="f-gem-block">
-            <div class="f-lbl" id="f-gem-lbl" style="color:var(--pale)">ZTP gem.</div>
-            <div class="f-gem-val" id="f-gem">—</div>
-          </div>
-          <div class="f-op">=</div>
-          <div class="f-result-block">
-            <div class="f-result-lbl">Indicatie</div>
-            <div class="f-result-val" id="f-totaal">—</div>
-            <div class="f-result-unit">ct / kWh</div>
-          </div>
-          <div class="f-op" style="padding-bottom:clamp(0.9rem,2.5vw,1.3rem);">−</div>
-          <div class="f-field">
-            <div class="f-lbl"><span class="pencil">✎</span> Korting</div>
-            <input class="f-input" id="f-korting" type="text" inputmode="decimal" value="0,0000" maxlength="7" />
-            <div style="font-size:clamp(0.38rem,1.1vw,0.55rem);color:var(--ember);letter-spacing:.08em;text-align:center;">ct/kWh</div>
-          </div>
-          <div class="f-op" style="padding-bottom:clamp(0.9rem,2.5vw,1.3rem);">=</div>
-          <div class="f-result-block" style="">
-            <div class="f-result-lbl" style="color:var(--gold);">Netto</div>
-            <div class="f-result-val" id="f-netto" style="color:var(--gold);">—</div>
-            <div class="f-result-unit">ct / kWh</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- STAP 2 VAST — zelfde positie, zichtbaar via JS -->
-    <div class="step" id="stap2-vast" style="visibility:hidden;grid-area:1/1;">
-      <div class="step-header">
-        <div class="step-num">2</div>
-        <div>
-          <div class="step-title">Vast contract — referentieprijs</div>
-          <div class="step-hint">Bij een vast contract betaalt u een vaste energieprijs ongeacht de markt.</div>
-        </div>
-      </div>
-      <div class="vast-card zichtbaar">
-        <div class="vast-card-lbl">Engie vast contract</div>
-        <div style="display:flex;align-items:flex-end;gap:clamp(0.3rem,1.5vw,0.8rem);flex-wrap:nowrap;">
-          <div>
-            <div class="vast-card-naam">Engie vast</div>
-            <div class="vast-card-prijs">5,22</div>
-            <div class="vast-card-unit">ct / kWh</div>
-          </div>
-          <div class="f-op" style="padding-bottom:clamp(0.9rem,2.5vw,1.3rem);">−</div>
-          <div class="f-field">
-            <div class="f-lbl"><span class="pencil">✎</span> Korting</div>
-            <input class="f-input" id="f-korting-vast" type="text" inputmode="decimal" value="0,0000" maxlength="7" />
-            <div style="font-size:clamp(0.38rem,1.1vw,0.55rem);color:var(--ember);letter-spacing:.08em;text-align:center;">ct/kWh</div>
-          </div>
-          <div class="f-op" style="padding-bottom:clamp(0.9rem,2.5vw,1.3rem);">=</div>
-          <div class="f-result-block" style="">
-            <div class="f-result-lbl" style="color:var(--gold);">Netto</div>
-            <div class="f-result-val" id="f-netto-vast" style="color:var(--gold);">—</div>
-            <div class="f-result-unit">ct / kWh</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-  </div><!-- /main -->
-
-  <footer>
-    <span>© 2025 Gasprijs Monitor · excl. belastingen</span>
-    <span>Bron: <a href="#">ZTP</a> · <a href="#">TTF</a></span>
-  </footer>
+  <footer>© 2025 Gasprijs Monitor · excl. belastingen &nbsp;·&nbsp; Bron: <a href="#">ZTP</a> · <a href="#">TTF</a></footer>
 
 </div>
 <script>
 // ╔══════════════════════════════════════════╗
 // ║        VARIABELEN — HIER INVULLEN        ║
 // ╠══════════════════════════════════════════╣
-  const PEILDATUM   = '16-03-2026';
-  const ZTP_DAG     = '50,15';
-  const ZTP_M1_NAAM = 'Maart 2026';  const ZTP_M1 = '50,23';
-  const ZTP_M2_NAAM = 'Febr. 2026'; const ZTP_M2 = '32,61';
-  const ZTP_M3_NAAM = 'Jan. 2026';  const ZTP_M3 = '34,50';
-  const TTF_DAG     = '51,10';
-  const TTF_M1_NAAM = 'Maart 2026';  const TTF_M1 = '50,91';
-  const TTF_M2_NAAM = 'Febr. 2026'; const TTF_M2 = '32,50';
-  const TTF_M3_NAAM = 'Jan. 2026';  const TTF_M3 = '34,00';
+  const PEILDATUM   = '17-03-2026';
+  const ZTP_M1      = '50,23';   // voorlopig maandgemiddelde ZTP
+  const TTF_M1      = '50,91';   // voorlopig maandgemiddelde TTF
 // ╚══════════════════════════════════════════╝
 
-  const unit = '<small>€/MWh</small>';
-  let gemWaarde = 0;
+  let indexWaarde = parseFloat(ZTP_M1.replace(',', '.'));
+  document.getElementById('index-val').textContent = ZTP_M1;
 
-  document.getElementById('hdr-datum').textContent = PEILDATUM;
-
-  const subLabels = {
-    ztp:  'Zeebrugge Trading Point',
-    ttf:  'Title Transfer Facility — Amsterdam',
-    vast: 'Vaste energieprijs per kWh'
-  };
-
-  function kiesHub(hub) {
-    ['ztp','ttf','vast'].forEach(h => document.getElementById('btn-'+h).classList.remove('active'));
+  function kiesIndex(hub) {
+    ['ztp','ttf'].forEach(h => document.getElementById('btn-'+h).classList.remove('active'));
     document.getElementById('btn-'+hub).classList.add('active');
-    // herstel TTF linkerrand: verdwijnt als inactief, zichtbaar als actief
+    const val = hub === 'ztp' ? ZTP_M1 : TTF_M1;
+    indexWaarde = parseFloat(val.replace(',', '.'));
+    document.getElementById('index-val').textContent = val;
+    // TTF: herstel linkerrand bij inactief
     document.getElementById('btn-ttf').style.borderLeft = (hub === 'ttf') ? '' : 'none';
-    document.getElementById('hub-sub').textContent = subLabels[hub];
-
-    const isVast = hub === 'vast';
-    document.getElementById('stap2-variabel').style.visibility = isVast ? 'hidden' : 'visible';
-    document.getElementById('stap2-vast').style.visibility     = isVast ? 'visible' : 'hidden';
-    document.getElementById('markt-row').style.visibility      = isVast ? 'hidden' : 'visible';
-
-    if (!isVast) {
-      const dag = hub === 'ztp' ? ZTP_DAG : TTF_DAG;
-      const m1n = hub === 'ztp' ? ZTP_M1_NAAM : TTF_M1_NAAM;
-      const m1  = hub === 'ztp' ? ZTP_M1 : TTF_M1;
-      const m2n = hub === 'ztp' ? ZTP_M2_NAAM : TTF_M2_NAAM;
-      const m2  = hub === 'ztp' ? ZTP_M2 : TTF_M2;
-      const m3n = hub === 'ztp' ? ZTP_M3_NAAM : TTF_M3_NAAM;
-      const m3  = hub === 'ztp' ? ZTP_M3 : TTF_M3;
-      const lbl = hub.toUpperCase();
-
-      document.getElementById('dag-datum').textContent = PEILDATUM;
-      document.getElementById('dag-prijs').textContent = dag;
-      document.getElementById('m1-naam').textContent   = m1n;
-      document.getElementById('m1-val').innerHTML      = m1 + unit;
-      document.getElementById('m2-naam').textContent   = m2n;
-      document.getElementById('m2-val').innerHTML      = m2;
-      document.getElementById('m3-naam').textContent   = m3n;
-      document.getElementById('m3-val').innerHTML      = m3;
-      document.getElementById('f-gem-lbl').textContent = lbl + ' gem.';
-      document.getElementById('s2-hub').textContent    = lbl;
-
-      gemWaarde = parseFloat(m1.replace(',', '.'));
-      document.getElementById('f-gem').textContent = isNaN(gemWaarde) ? '—' : m1;
-      bereken();
-    }
+    bereken();
   }
 
   function bereken() {
-    const marge  = parseFloat(document.getElementById('f-marge').value.replace(',', '.'));
-    const factor = parseFloat(document.getElementById('f-factor').value);
+    const marge   = parseFloat(document.getElementById('f-marge').value.replace(',', '.'));
+    const factor  = parseFloat(document.getElementById('f-factor').value);
     const korting = parseFloat(document.getElementById('f-korting').value.replace(',', '.')) || 0;
-    const el      = document.getElementById('f-totaal');
-    const elNetto = document.getElementById('f-netto');
-    if (isNaN(marge) || isNaN(gemWaarde)) { el.textContent = '—'; elNetto.textContent = '—'; return; }
-    const indicatie = marge + factor * (gemWaarde / 10);
-    el.textContent      = indicatie.toFixed(2).replace('.', ',');
-    elNetto.textContent = (indicatie - korting).toFixed(2).replace('.', ',');
-  }
-
-  function berekenVast() {
-    const basis   = 5.22;
-    const korting = parseFloat(document.getElementById('f-korting-vast').value.replace(',', '.')) || 0;
-    document.getElementById('f-netto-vast').textContent = (basis - korting).toFixed(2).replace('.', ',');
+    const el      = document.getElementById('f-uitkomst');
+    if (isNaN(marge) || isNaN(indexWaarde)) { el.textContent = '—'; return; }
+    const prijs = marge + factor * (indexWaarde / 10) - korting;
+    el.textContent = prijs.toFixed(2).replace('.', ',');
   }
 
   document.getElementById('f-marge').addEventListener('input', bereken);
   document.getElementById('f-factor').addEventListener('change', bereken);
   document.getElementById('f-korting').addEventListener('input', bereken);
-  document.getElementById('f-korting-vast').addEventListener('input', berekenVast);
+  bereken();
+
+  function berekenVast() {
+    const prijs   = parseFloat(document.getElementById('v-prijs').value.replace(',', '.'));
+    const korting = parseFloat(document.getElementById('v-korting').value.replace(',', '.')) || 0;
+    const el      = document.getElementById('v-uitkomst');
+    if (isNaN(prijs)) { el.textContent = '—'; return; }
+    el.textContent = (prijs - korting).toFixed(2).replace('.', ',');
+  }
+  document.getElementById('v-prijs').addEventListener('input', berekenVast);
+  document.getElementById('v-korting').addEventListener('input', berekenVast);
   berekenVast();
 
-  // initialiseer ZTP
-  kiesHub('ztp');
+  // Voorlopig label: huidige maand op basis van datum
+  const maanden = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+  const nu = new Date();
+  document.getElementById('voorlopig-lbl').textContent = `Voorlopig · ${maanden[nu.getMonth()]} ${nu.getFullYear()}`;
 </script>
 </body>
 </html>
