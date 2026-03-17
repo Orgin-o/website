@@ -288,7 +288,7 @@
         </div>
       </div>
 
-      <div style="font-size:clamp(0.44rem,1.3vw,0.65rem);color:var(--pale);letter-spacing:0.06em;">Vul hier de waarden uit uw contract in:</div>
+      <div style="font-size:clamp(0.44rem,1.3vw,0.65rem);color:var(--pale);letter-spacing:0.06em;">Vul hier de waarden in uit uw contract:</div>
       <div class="velden">
         <div class="veld-rij">
           <div class="veld-lbl">Marge</div>
@@ -339,7 +339,7 @@
     <!-- ═══ LUIK 2: VAST ═══ -->
     <div class="luik">
       <div class="luik-title">Vast contract</div>
-      <div class="luik-tekst">Hoeveel u per kWh betaalt staat in uw contract en blijft ongewijzigd voor de duurtijd van het contract (meestal 1 jaar).<br><br>Let op: het contract wordt automatisch verlengd maar dan aan nieuwe voorwaarden!</div>
+      <div class="luik-tekst">Hoeveel u per kWh betaalt staat in uw contract en blijft ongewijzigd voor de duurtijd van het contract (meestal 1 jaar).<br><br>Let op: Na afloop wordt het contract automatisch verlengd maar dan aan nieuwe voorwaarden!</div>
 
       <div class="formule-display-wrapper">
         <div class="resultaat-lbl">Uw energieprijs =</div>
@@ -348,7 +348,7 @@
         </div>
       </div>
 
-      <div style="font-size:clamp(0.44rem,1.3vw,0.65rem);color:var(--pale);letter-spacing:0.06em;">Vul hier de waarden uit uw contract in:</div>
+      <div style="font-size:clamp(0.44rem,1.3vw,0.65rem);color:var(--pale);letter-spacing:0.06em;">Vul hier de waarden in uit uw contract:</div>
       <div class="velden">
         <div class="veld-rij">
           <div class="veld-lbl">Prijs</div>
@@ -449,7 +449,8 @@
   // Voorlopig label: huidige maand op basis van datum
   const maanden = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
   const nu = new Date();
-  document.getElementById('voorlopig-lbl').textContent = `Voorlopig · ${maanden[nu.getMonth()]} ${nu.getFullYear()}`;
+  document.getElementById('voorlopig-lbl').textContent = `${maanden[nu.getMonth()]} ${nu.getFullYear()} · Voorlopig — obv reeds beschikbare dagwaarden van de index`;
 </script>
 </body>
 </html>
+
